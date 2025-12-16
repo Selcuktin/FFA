@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sıcak Fırsatlar - Donanım Arşivi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-circle">D</div>
+                <span class="logo-text">DONANIM ARŞİVİ</span>
+            </div>
+            <div class="header-right">
+                <button class="btn-secondary">Giriş</button>
+                <button class="btn-secondary">Kayıt ol</button>
+                <div class="search-box">
+                    <input type="text" placeholder="Ara..." class="search-input">
+                </div>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <a href="#" class="nav-link">Ana Sayfa</a>
+            <a href="#" class="nav-link active">Forumlar</a>
+            <a href="#" class="nav-link">İkinci El</a>
+            <a href="#" class="nav-link">Neler Yeni</a>
+            <a href="#" class="nav-link">Üyeler</a>
+            <a href="#" class="nav-link">Laptop Arşivi</a>
+            <a href="#" class="nav-link">Haber & İnceleme</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="forum-header">
+            <div class="forum-tabs">
+                <a href="#" class="tab">YENİ MESAJLAR</a>
+                <a href="#" class="tab active">SICAK FIRSATLAR</a>
+                <a href="#" class="tab">YENİ KONULAR</a>
+                <a href="#" class="tab">KONU DIŞI</a>
+                <a href="#" class="tab">POPÜLER KONULAR</a>
+            </div>
+            <div class="forum-actions">
+                <button class="btn-primary">Yeni mesajlar</button>
+                <button class="btn-primary">Yeni Konu Aç</button>
+            </div>
+        </div>
+
+        <!-- Deals Table -->
+        <div class="deals-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-topic">Konu</th>
+                        <th class="col-forum">Forumu</th>
+                        <th class="col-replies">Cevap</th>
+                        <th class="col-views">Hit</th>
+                        <th class="col-date">Gönderim</th>
+                        <th class="col-author">Son yazan</th>
+                    </tr>
+                </thead>
+                <tbody id="deals-tbody">
+                    <tr>
+                        <td colspan="6" class="loading">Yükleniyor...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="disclaimer">
+            <p><strong>Önemli:</strong> Bu site yalnızca bilgilendirme ve yönlendirme amacıyla hazırlanmış bir eğitim projesidir. 
+            Herhangi bir satış, reklam veya ticari kazanç amacı GÜTMEMEKTEDİR. 
+            Tüm ürün bilgileri ve fiyatlar ilgili kaynak sitelerden alınmaktadır.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

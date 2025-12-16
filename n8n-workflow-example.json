@@ -1,0 +1,96 @@
+{
+  "name": "Donanım Arşivi Fırsatlar Toplama",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "cron-trigger",
+      "name": "Cron Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://forum.donanimarsivi.com/konu/sicak-firsatlar/",
+        "options": {}
+      },
+      "id": "http-request",
+      "name": "HTTP Request - Donanım Arşivi",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// HTML'i parse et ve ürün bilgilerini çıkar\nconst html = $input.all()[0].json.body;\nconst deals = [];\n\n// Basit regex ile başlık ve link çıkarma (gerçek kullanımda cheerio veya benzeri kütüphane gerekebilir)\nconst titleRegex = /<a[^>]*class=\"[^\"]*topic[^\"]*\"[^>]*>([^<]+)<\\/a>/gi;\nconst linkRegex = /<a[^>]*href=\"([^\"]+)\"[^>]*class=\"[^\"]*topic[^\"]*\"/gi;\n\nlet match;\nconst titles = [];\nconst links = [];\n\nwhile ((match = titleRegex.exec(html)) !== null) {\n  titles.push(match[1].trim());\n}\n\nwhile ((match = linkRegex.exec(html)) !== null) {\n  const url = match[1];\n  const fullUrl = url.startsWith('http') ? url : `https://forum.donanimarsivi.com${url}`;\n  links.push(fullUrl);\n}\n\n// Başlık ve linkleri eşleştir\nfor (let i = 0; i < Math.min(titles.length, links.length); i++) {\n  const title = titles[i];\n  const url = links[i];\n  \n  // İndirim bitti kontrolü\n  const isExpired = title.toLowerCase().includes('indirim bitti') || \n                    title.toLowerCase().includes('x indirim');\n  \n  // Fiyatı title'dan çıkar\n  const priceMatch = title.match(/(\\d+[.,]\\d+)\\s*TL/);\n  const price = priceMatch ? priceMatch[1] + ' TL' : null;\n  \n  if (!isExpired && title && url) {\n    deals.push({\n      source: 'DonanımArsivi',\n      title: title,\n      price: price,\n      url: url\n    });\n  }\n}\n\nreturn deals.map(deal => ({ json: deal }));"
+      },
+      "id": "function-node",
+      "name": "Parse HTML",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://your-app.vercel.app/api/deals",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "source",
+              "value": "={{ $json.source }}"
+            },
+            {
+              "name": "title",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "name": "price",
+              "value": "={{ $json.price }}"
+            },
+            {
+              "name": "url",
+              "value": "={{ $json.url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "http-post",
+      "name": "POST to API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [850, 300]
+    }
+  ],
+  "connections": {
+    "Cron Trigger": {
+      "main": [[{"node": "HTTP Request - Donanım Arşivi", "type": "main", "index": 0}]]
+    },
+    "HTTP Request - Donanım Arşivi": {
+      "main": [[{"node": "Parse HTML", "type": "main", "index": 0}]]
+    },
+    "Parse HTML": {
+      "main": [[{"node": "POST to API", "type": "main", "index": 0}]]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-01-30T00:00:00.000Z",
+  "versionId": "1"
+}
+
