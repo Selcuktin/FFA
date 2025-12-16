@@ -271,13 +271,14 @@ tbody tr:last-child td {
 }
 
 .topic-link {
-    color: #1976d2;
+    color: #333;
     text-decoration: none;
     flex: 1;
+    cursor: default;
 }
 
 .topic-link:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .topic-icon {

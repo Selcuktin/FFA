@@ -74,9 +74,9 @@ function createDealRow(deal) {
                     <span class="topic-number">${deal.id}</span>
                     <span class="topic-icon">${icon}</span>
                     ${badge}
-                    <a href="${deal.url}" target="_blank" rel="noopener noreferrer" class="topic-link">
+                    <span class="topic-link">
                         ${escapeHtml(deal.title)}
-                    </a>
+                    </span>
                 </div>
             </td>
             <td class="col-forum">Sıcak Fırsatlar</td>
